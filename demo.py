@@ -13,7 +13,7 @@ def main(args):
     distiller = Distiller(cfg)
     if args.ckpt != "":
         ckpt = model_zoo(args.ckpt)
-        load_weights(distiller, ckpt["state_dict"])
+        load_weights(distiller, ckpt["g_ema"])
 
     while True:
         var = torch.randn(1, distiller.mapping_net.style_dim)

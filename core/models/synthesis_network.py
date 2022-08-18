@@ -43,7 +43,8 @@ class SynthesisNetwork(nn.Module):
             size,
             style_dim,
             blur_kernel=[1, 3, 3, 1],
-            channels = [512, 512, 512, 512, 512, 256, 128, 64, 32]
+            #channels = [512, 512, 512, 512, 512, 256, 128, 64, 32]
+            channels = [1024, 1024, 1024, 1024, 1024, 512, 256, 128]
     ):
         super().__init__()
         self.size = size

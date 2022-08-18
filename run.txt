@@ -1,0 +1,3 @@
+python convert_rosinality_ckpt.py --ckpt="C:\Users\Aravind\Desktop\network-tadne-stylegan2.pt.pkl" --ckpt-mnet="TADNE/mnet-tadne.mnet" --ckpt-snet="TADNE/snet-tadne.snet" --cfg-path="TADNE/tadne-config.json"
+python demo.py --cfg="C:\Users\Aravind\OneDrive - Nanyang Technological University\FYP\GitHub\MobileStyleGAN.pytorch\TADNE\tadne-config.json" --ckpt="C:\Users\Aravind\Desktop\network-tadne-stylegan2.pt.pkl" --generator teacher
+python train.py --cfg "C:\Users\Aravind\OneDrive - Nanyang Technological University\FYP\GitHub\MobileStyleGAN.pytorch\TADNE\tadne-config.json" --ckpt="C:\Users\Aravind\Desktop\network-tadne-stylegan2.pt.pkl" --gpus 1

@@ -13,7 +13,8 @@ class MobileSynthesisNetwork(nn.Module):
     def __init__(
             self,
             style_dim,
-            channels = [512, 512, 512, 512, 512, 256, 128, 64]
+            channels = [1024, 1024, 1024, 1024, 1024, 512, 256, 128]
+            #channels = [512, 512, 512, 512, 512, 256, 128, 64]
     ):
         super().__init__()
         self.style_dim = style_dim

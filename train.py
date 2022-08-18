@@ -7,6 +7,9 @@ from core.utils import load_cfg, load_weights, select_weights
 from core.distiller import Distiller
 from core.model_zoo import model_zoo
 
+import os
+os.environ["PL_TORCH_DISTRIBUTED_BACKEND"] = "gloo"
+
 def build_logger(cfg):
     return getattr(pl_loggers, cfg.type)(
         **cfg.params
@@ -17,7 +20,7 @@ def main(args):
     distiller = Distiller(cfg)
     if args.ckpt is not None:
         ckpt = model_zoo(args.ckpt)
-        load_weights(distiller, ckpt["state_dict"])
+        load_weights(distiller, ckpt["g_ema"])
     logger = build_logger(cfg.logger)
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         filepath=os.getcwd() if args.checkpoint_dir is None else args.checkpoint_dir,
@@ -32,7 +35,7 @@ def main(args):
         gpus=args.gpus,
         max_epochs=cfg.trainer.max_epochs,
         accumulate_grad_batches=args.grad_batches,
-        distributed_backend=args.distributed_backend,
+        distributed_backend=None,#args.distributed_backend
         checkpoint_callback=checkpoint_callback,
         val_check_interval=args.val_check_interval,
         logger=logger

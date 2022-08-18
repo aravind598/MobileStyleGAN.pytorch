@@ -38,10 +38,12 @@ class Distiller(pl.LightningModule):
         self.synthesis_net = SynthesisNetwork(**synthesis_net_ckpt["params"]).eval()
         self.synthesis_net.load_state_dict(synthesis_net_ckpt["ckpt"])
         # student network
+        print("load student network...")
         self.student = MobileSynthesisNetwork(
             style_dim=self.mapping_net.style_dim,
             channels=synthesis_net_ckpt["params"]["channels"][:-1]
         )
+        print("style_dim:", self.mapping_net.style_dim,"channels",synthesis_net_ckpt["params"]["channels"][:-1])
 
         # dataset
         self.wsize = self.student.wsize()
@@ -131,8 +133,11 @@ class Distiller(pl.LightningModule):
             var = torch.randn(self.cfg.batch_size, self.mapping_net.style_dim).to(self.device_info.device)
             style = self.mapping_net(var)
             return style
-
+        print("batch",batch["noise"].shape)
+        print("stylemix:0" ,self.cfg.stylemix_p[0])
+        print("stylemix:1" ,self.cfg.stylemix_p[1])
         coin = random.random()
+        print("Random Coin:", coin)
         if coin >= self.cfg.stylemix_p[1]:
             style = self.mapping_net(batch["noise"]).unsqueeze(1).repeat(1, self.wsize, 1)
         elif coin >= self.cfg.stylemix_p[0] and coin < self.cfg.stylemix_p[1]:

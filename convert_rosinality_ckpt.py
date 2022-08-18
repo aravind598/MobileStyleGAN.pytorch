@@ -10,6 +10,7 @@ def extract_mnet(ckpt, ckpt_path):
     ckpt_mnet = select_weights(ckpt["g"], "style.")
     style_dim = ckpt_mnet["1.bias"].size()[0]
     n_layers = len([i for i, _ in enumerate(ckpt_mnet) if f"{i}.bias" in ckpt_mnet])
+    print("n_mlp", n_layers)
     mnet = MappingNetwork(style_dim, n_layers)
     mnet.layers.load_state_dict(ckpt_mnet)
     torch.save({
@@ -56,7 +57,7 @@ def extract_snet(ckpt, style_dim, ckpt_path):
     snet.to_rgb1.load_state_dict(select_weights(ckpt["g"], "to_rgb1."))
     for i, _ in enumerate(snet.layers):
         snet.layers[i].load_state_dict(blocks[i].state_dict())
-
+    print("size",size,"style_dim",style_dim,"channels",channels)
     torch.save({
         "params": {
             "size": size,
@@ -94,3 +95,5 @@ if __name__ == "__main__":
     parser.add_argument("--cfg-path", type=str, default="", help="path to output config file")
     args = parser.parse_args()
     main(args)
+
+
